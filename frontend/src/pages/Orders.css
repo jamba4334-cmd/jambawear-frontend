@@ -1,0 +1,99 @@
+/* --- LAYOUT --- */
+.orders-container { 
+    max-width: 800px; 
+    margin: 40px auto; 
+    padding: 0 20px; 
+    flex: 1;
+}
+
+.page-title { 
+    font-size: 20px; 
+    letter-spacing: 1px; 
+    text-transform: uppercase; 
+    margin-bottom: 25px; 
+    border-bottom: 2px solid var(--primary, #1a1a1a); 
+    padding-bottom: 10px; 
+    display: inline-block; 
+}
+
+/* --- ORDER CARDS --- */
+.order-card { 
+    background: white; 
+    border: 1px solid #eaeaea; 
+    border-radius: 8px; 
+    padding: 20px; 
+    margin-bottom: 20px; 
+    box-shadow: 0 2px 5px rgba(0,0,0,0.02); 
+}
+
+.order-header { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: flex-start; 
+    margin-bottom: 15px; 
+    border-bottom: 1px dashed #ddd; 
+    padding-bottom: 15px; 
+}
+
+.order-id { font-size: 12px; color: #777; margin: 0 0 5px 0; }
+.order-date { font-size: 14px; font-weight: bold; margin: 0; }
+
+/* --- STATUS BADGES --- */
+.status { padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
+.status.processing { background: #fff3cd; color: #856404; }
+.status.shipped { background: #cce5ff; color: #004085; }
+.status.delivered { background: #d4edda; color: #155724; }
+.status.cancelled { background: #f8d7da; color: #721c24; }
+
+/* --- ORDER ITEMS --- */
+.order-item-detail { 
+    display: flex; 
+    gap: 15px; 
+    margin-bottom: 15px; 
+    padding-bottom: 15px; 
+    border-bottom: 1px solid #eaeaea; 
+}
+
+.order-item-detail:last-child { border-bottom: none; }
+.order-item-img { width: 60px; height: 80px; object-fit: cover; border-radius: 6px; background: #eaeaea; }
+.order-item-info { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+.order-item-title { margin: 0 0 5px 0; font-weight: 600; font-size: 14px; }
+.order-item-meta { margin: 0 0 5px 0; font-size: 12px; color: #777; }
+.order-item-price { margin: 0; font-size: 14px; font-weight: bold; }
+
+/* --- DELIVERY & TOTALS --- */
+.delivery-estimate { 
+    padding: 10px 15px; 
+    border-radius: 6px; 
+    font-size: 12px; 
+    font-weight: bold; 
+    display: flex; 
+    align-items: center; 
+    gap: 8px; 
+    margin-top: 5px; 
+    border: 1px solid transparent; 
+}
+
+.order-total { 
+    display: flex; 
+    justify-content: space-between; 
+    font-size: 16px; 
+    font-weight: bold; 
+    margin-top: 15px; 
+    padding-top: 15px; 
+    border-top: 1px solid #eaeaea; 
+}
+
+/* --- LOADING & EMPTY STATES --- */
+.loading-msg, .empty-msg { text-align: center; padding: 50px; color: #777; }
+.shop-now-btn { 
+    display: inline-block; 
+    margin-top: 20px; 
+    padding: 12px 24px; 
+    background: var(--primary, #1a1a1a); 
+    color: white; 
+    border-radius: 4px; 
+    font-weight: bold; 
+    font-size: 13px; 
+    text-transform: uppercase; 
+}

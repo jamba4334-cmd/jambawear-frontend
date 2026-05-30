@@ -1,0 +1,35 @@
+.seo-footer { 
+    text-align: center; 
+    /* Reduced padding further to 15px top and bottom */
+    padding: 15px 20px; 
+    background-color: #fff; 
+    border-top: 1px solid #eee; 
+    margin-top: auto; 
+    width: 100%; 
+    box-sizing: border-box;
+}
+
+/* This removes the bulky default space browsers add to paragraph tags */
+.seo-footer p {
+    margin: 4px 0; 
+}
+
+.footer-links {
+    display: flex; 
+    flex-wrap: wrap; 
+    justify-content: center; 
+    gap: 15px; 
+    /* Tightened the gap around the links */
+    margin: 8px 0; 
+    font-size: 12px; 
+    color: #555;
+}
+
+.footer-links a {
+    text-decoration: underline;
+}
+
+.copyright {
+    font-size: 12px; 
+    color: #888;
+}

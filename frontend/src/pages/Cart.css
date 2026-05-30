@@ -1,0 +1,181 @@
+/* Container & Titles */
+.container { 
+  max-width: 800px; 
+  margin: 20px auto; 
+  padding: 0 20px; 
+}
+.page-title { 
+  font-size: 22px; 
+  letter-spacing: 1px; 
+  text-transform: uppercase; 
+  margin-bottom: 30px; 
+  border-bottom: 2px solid var(--primary); 
+  padding-bottom: 10px; 
+  display: inline-block; 
+}
+
+/* Individual Cart Items */
+.cart-item { 
+  display: flex; 
+  gap: 15px; 
+  background: white; 
+  padding: 15px; 
+  border-radius: 8px; 
+  margin-bottom: 15px; 
+  border: 1px solid var(--border); 
+  position: relative; 
+}
+.item-img { 
+  width: 80px; 
+  height: 100px; 
+  object-fit: cover; 
+  border-radius: 4px; 
+}
+.item-info { 
+  flex: 1; 
+  display: flex; 
+  flex-direction: column; 
+  justify-content: center; 
+}
+.item-title { 
+  font-weight: 600; 
+  margin: 0 0 5px 0; 
+  font-size: 15px; 
+}
+.item-meta { 
+  font-size: 12px; 
+  color: #777; 
+  margin-bottom: 8px; 
+}
+.item-price { 
+  font-weight: bold; 
+  font-size: 16px; 
+}
+
+/* Quantity Controls */
+.qty-wrapper { 
+  display: flex; 
+  align-items: center; 
+  gap: 5px; 
+  margin-top: 5px; 
+}
+.qty-btn { 
+  background: var(--border); 
+  border: none; 
+  width: 24px; 
+  height: 24px; 
+  border-radius: 4px; 
+  font-weight: bold; 
+  cursor: pointer; 
+  color: var(--primary); 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+}
+.qty-btn:hover { 
+  background: #dcdcdc; 
+}
+.qty-input { 
+  width: 35px; 
+  height: 24px; 
+  text-align: center; 
+  border: 1px solid var(--border); 
+  border-radius: 4px; 
+  font-size: 13px; 
+  font-weight: 600; 
+  padding: 0; 
+  outline: none;
+}
+.qty-input::-webkit-outer-spin-button, 
+.qty-input::-webkit-inner-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+
+/* Remove Button */
+.remove-btn { 
+  position: absolute; 
+  bottom: 15px; 
+  right: 15px; 
+  color: #ff4d4d; 
+  font-size: 12px; 
+  cursor: pointer; 
+  font-weight: bold; 
+  text-transform: uppercase;
+}
+.remove-btn:hover { 
+  text-decoration: underline; 
+}
+
+/* Address Box */
+.address-box { 
+  background: #fff; 
+  border: 1.5px dashed var(--accent); 
+  padding: 15px; 
+  border-radius: 8px; 
+  margin: 30px 0; 
+}
+.address-header { 
+  font-size: 12px; 
+  font-weight: bold; 
+  text-transform: uppercase; 
+  color: var(--accent); 
+  margin-bottom: 10px; 
+  display: flex; 
+  justify-content: space-between; 
+}
+.address-text { 
+  font-size: 14px; 
+  line-height: 1.4; 
+  color: #555; 
+}
+.no-address { 
+  color: #d9534f; 
+  font-weight: bold; 
+}
+
+/* Order Summary Box */
+.summary { 
+  background: white; 
+  padding: 20px; 
+  border-radius: 8px; 
+  border: 1px solid var(--border); 
+  margin-bottom: 50px;
+}
+.summary-row { 
+  display: flex; 
+  justify-content: space-between; 
+  margin-bottom: 10px; 
+  font-size: 14px; 
+}
+.total-row { 
+  border-top: 1px solid #eee; 
+  padding-top: 15px; 
+  margin-top: 15px; 
+  font-weight: bold; 
+  font-size: 18px; 
+}
+
+/* Checkout Button */
+.checkout-btn { 
+  width: 100%; 
+  padding: 18px; 
+  background: var(--primary); 
+  color: white; 
+  border: none; 
+  border-radius: 6px; 
+  font-weight: bold; 
+  font-size: 15px; 
+  text-transform: uppercase; 
+  letter-spacing: 2px; 
+  cursor: pointer; 
+  margin-top: 20px; 
+  transition: 0.3s; 
+}
+.checkout-btn:disabled { 
+  background: #ccc; 
+  cursor: not-allowed; 
+}
+.checkout-btn:hover:not(:disabled) { 
+  opacity: 0.9; 
+}
