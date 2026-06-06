@@ -15,8 +15,8 @@ export default function Orders() {
     // 1. Check if user is logged in
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        const customerIdentifier = user.email || user.phoneNumber;
-        fetchUserOrders(customerIdentifier);
+        // Securely pass the user's unique ID to fetch orders
+        fetchUserOrders(user.uid);
       } else {
         // Redirect to login if not authenticated
         navigate('/login?redirect=orders');
@@ -26,9 +26,10 @@ export default function Orders() {
     return () => unsubscribe();
   }, [navigate]);
 
-  const fetchUserOrders = async (customerIdentifier) => {
+  const fetchUserOrders = async (uid) => {
     try {
-      const q = query(collection(db, "orders"), where("customer", "==", customerIdentifier));
+      // Securely ask Firebase only for orders matching this user's ID
+      const q = query(collection(db, "orders"), where("userId", "==", uid));
       const querySnapshot = await getDocs(q);
       
       if (querySnapshot.empty) {

@@ -14,6 +14,7 @@ import Contact from './pages/Contact';
 import Orders from './pages/Orders';
 // Import the new Wishlist page!
 import Wishlist from './pages/Wishlist'; 
+import OrderSuccess from './pages/OrderSuccess'; // Adjust path as needed
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
           {/* User Account Routes */}
           <Route path="orders" element={<Orders />} />
           <Route path="wishlist" element={<Wishlist />} />
+          <Route path="/success" element={<OrderSuccess />} />
 
         </Route>
       </Routes>

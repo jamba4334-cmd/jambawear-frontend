@@ -36,7 +36,11 @@ export default function ProductView() {
           data.id = data.item_id || querySnapshot.docs[0].id;
           setProduct(data);
           setMainImage(data.images?.[0] || "https://via.placeholder.com/400x500");
-          if (data.requires_size === false) setSelectedSize("One Size");
+          
+          // ✅ NEW: Auto-select "One Size" if it's an accessory or doesn't require size
+          if (data.requires_size === false || (data.category && data.category.toLowerCase().includes('accessories'))) {
+            setSelectedSize("One Size");
+          }
         } else {
           const docRef = doc(db, "products", id);
           const docSnap = await getDoc(docRef);
@@ -45,7 +49,11 @@ export default function ProductView() {
             data.id = docSnap.id;
             setProduct(data);
             setMainImage(data.images?.[0] || "https://via.placeholder.com/400x500");
-            if (data.requires_size === false) setSelectedSize("One Size");
+            
+            // ✅ NEW: Auto-select "One Size" if it's an accessory or doesn't require size
+            if (data.requires_size === false || (data.category && data.category.toLowerCase().includes('accessories'))) {
+              setSelectedSize("One Size");
+            }
           } else {
             setError(true);
           }
@@ -65,16 +73,17 @@ export default function ProductView() {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
       if (user && product) {
-        const email = user.email || user.phoneNumber;
-        checkWishlistStatus(email, product.id);
+        // Pass the user's secure UID instead of email
+        checkWishlistStatus(user.uid, product.id);
       }
     });
     return () => unsubscribe();
   }, [product]);
 
-  const checkWishlistStatus = async (email, productId) => {
+  const checkWishlistStatus = async (uid, productId) => {
     try {
-      const wishlistDocRef = doc(db, 'wishlists', `${email}_${productId}`);
+      // Look inside the secure /users/{uid}/wishlist folder
+      const wishlistDocRef = doc(db, 'users', uid, 'wishlist', productId);
       const docSnap = await getDoc(wishlistDocRef);
       if (docSnap.exists()) {
         setInWishlist(true);
@@ -91,8 +100,10 @@ export default function ProductView() {
       return;
     }
     
-    const email = currentUser.email || currentUser.phoneNumber;
-    const wishlistDocRef = doc(db, 'wishlists', `${email}_${product.id}`);
+    // Get the user's unique ID
+    const uid = currentUser.uid;
+    // Point directly to their secure subcollection
+    const wishlistDocRef = doc(db, 'users', uid, 'wishlist', product.id);
 
     try {
       if (inWishlist) {
@@ -102,7 +113,6 @@ export default function ProductView() {
       } else {
         // Add to Firestore
         await setDoc(wishlistDocRef, {
-          customerEmail: email,
           productId: product.id,
           addedAt: new Date()
         });
@@ -139,8 +149,10 @@ export default function ProductView() {
     setTimeout(() => setAddedToCart(false), 2000);
   };
 
+  // --- UPDATED BUY NOW LOGIC ---
   const handleBuyNow = () => {
-    const singleItemCart = [{
+    // 1. Create the single item
+    const singleItem = [{
       id: product.id,
       title: product.title,
       price: product.selling_price,
@@ -148,8 +160,12 @@ export default function ProductView() {
       size: selectedSize,
       quantity: 1
     }];
-    localStorage.setItem('jambaCart', JSON.stringify(singleItemCart));
-    navigate('/cart');
+
+    // 2. Save it to a TEMPORARY "Buy Now" cart so we don't delete their real cart!
+    localStorage.setItem('jambaBuyNow', JSON.stringify(singleItem));
+
+    // 3. Navigate to the cart page and trigger "Buy Now Mode" in the URL
+    navigate('/cart?mode=buynow');
   };
 
   if (loading) return <div className="loading-state">Loading Product Details...</div>;
@@ -163,6 +179,9 @@ export default function ProductView() {
 
   const isOOS = product.isOutOfStock === true;
   
+  // Check if the product is an accessory (case-insensitive)
+  const isAccessory = product.category && product.category.toLowerCase().includes('accessories');
+  
   let displayCategory = product.category || 'N/A';
   if (displayCategory.includes('-')) {
     const parts = displayCategory.split('-');
@@ -171,10 +190,6 @@ export default function ProductView() {
 
   return (
     <>
-      <div className="back-nav">
-        <span className="back-link" onClick={() => navigate(-1)}>← Back</span>
-      </div>
-
       <div className="product-container">
         <div className="product-image-section">
           <div className={`product-image-box ${isOOS ? 'oos-dim' : ''}`}>
@@ -216,7 +231,8 @@ export default function ProductView() {
             <div className="meta-item"><strong>Category:</strong> {displayCategory}</div>
           </div>
 
-          {product.requires_size !== false && (
+          {/* ✅ NEW: Hide the size section if it's an accessory or doesn't require size */}
+          {product.requires_size !== false && !isAccessory && (
             <div className="size-section">
               <span className="size-label">Select Size</span>
               <div className="size-options">

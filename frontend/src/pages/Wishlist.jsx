@@ -15,8 +15,8 @@ export default function Wishlist() {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
       if (user) {
-        const email = user.email || user.phoneNumber;
-        fetchWishlistData(email);
+        // Pass the user's secure UID instead of email
+        fetchWishlistData(user.uid);
       } else {
         // If they aren't logged in, send them to login before viewing wishlist
         navigate('/login?redirect=wishlist');
@@ -26,11 +26,11 @@ export default function Wishlist() {
     return () => unsubscribe();
   }, [navigate]);
 
-  const fetchWishlistData = async (email) => {
+  const fetchWishlistData = async (uid) => {
     try {
-      // 1. Get all wishlist records for this specific user
-      const q = query(collection(db, "wishlists"), where("customerEmail", "==", email));
-      const wishlistSnapshot = await getDocs(q);
+      // 1. Get all wishlist records from this specific user's secure subfolder
+      const wishlistRef = collection(db, 'users', uid, 'wishlist');
+      const wishlistSnapshot = await getDocs(wishlistRef);
 
       if (wishlistSnapshot.empty) {
         setWishlistItems([]);
@@ -77,12 +77,11 @@ export default function Wishlist() {
 
   const removeFromWishlist = async (productId) => {
     if (!currentUser) return;
-    const email = currentUser.email || currentUser.phoneNumber;
-    const docId = `${email}_${productId}`;
+    const uid = currentUser.uid;
 
     try {
-      // Remove from Firebase
-      await deleteDoc(doc(db, "wishlists", docId));
+      // Remove from the secure Firebase subfolder
+      await deleteDoc(doc(db, 'users', uid, 'wishlist', productId));
       
       // Instantly remove from the screen without reloading
       setWishlistItems(prev => prev.filter(item => item.id !== productId));
@@ -148,10 +147,18 @@ export default function Wishlist() {
               <div key={item.id} className="wishlist-card">
                 <div className={`wishlist-img-wrapper ${isOOS ? 'oos-dim' : ''}`}>
                   {isOOS && <span className="oos-badge">Out of Stock</span>}
-                  <img src={itemImage} alt={item.title} className="wishlist-img" />
+                  
+                  {/* WRAPPED IMAGE IN A LINK */}
+                  <Link to={`/product/${item.id}`} style={{ display: 'block', height: '100%' }}>
+                    <img src={itemImage} alt={item.title} className="wishlist-img" />
+                  </Link>
+
                   <button 
                     className="remove-btn" 
-                    onClick={() => removeFromWishlist(item.id)}
+                    onClick={(e) => {
+                      e.preventDefault(); // Prevents the link from triggering when clicking 'X'
+                      removeFromWishlist(item.id);
+                    }}
                     title="Remove from Wishlist"
                   >
                     ✕
@@ -159,7 +166,11 @@ export default function Wishlist() {
                 </div>
                 
                 <div className="wishlist-info">
-                  <h3 className="wishlist-title">{item.title}</h3>
+                  {/* WRAPPED TITLE IN A LINK */}
+                  <Link to={`/product/${item.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                    <h3 className="wishlist-title" style={{ cursor: 'pointer' }}>{item.title}</h3>
+                  </Link>
+
                   <p className="wishlist-price">₹{item.selling_price?.toLocaleString('en-IN')}</p>
                   <button 
                     className={`move-to-cart-btn ${isOOS ? 'disabled-btn' : ''}`}

@@ -1,0 +1,126 @@
+.success-page-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 70vh;
+  background-color: #fafafa;
+  padding: 20px;
+}
+
+.success-card {
+  background: white;
+  padding: 50px 40px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  text-align: center;
+  max-width: 450px;
+  width: 100%;
+  animation: slideUpFade 0.6s ease-out forwards;
+}
+
+/* --- SVG ANIMATION MAGIC --- */
+.animated-check {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: block;
+  stroke-width: 2.5;
+  stroke: #fff;
+  stroke-miterlimit: 10;
+  margin: 0 auto 25px auto;
+  box-shadow: inset 0px 0px 0px #27ae60;
+  animation: fillGreen 0.4s ease-in-out 0.4s forwards, scaleBounce 0.3s ease-in-out 0.9s both;
+}
+
+.animated-check-circle {
+  stroke-dasharray: 166;
+  stroke-dashoffset: 166;
+  stroke-width: 2.5;
+  stroke-miterlimit: 10;
+  stroke: #27ae60;
+  fill: none;
+  animation: strokeDraw 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+}
+
+.animated-check-path {
+  transform-origin: 50% 50%;
+  stroke-dasharray: 48;
+  stroke-dashoffset: 48;
+  animation: strokeDraw 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+}
+
+@keyframes strokeDraw {
+  100% { stroke-dashoffset: 0; }
+}
+@keyframes scaleBounce {
+  0%, 100% { transform: none; }
+  50% { transform: scale3d(1.1, 1.1, 1); }
+}
+@keyframes fillGreen {
+  100% { box-shadow: inset 0px 0px 0px 50px #27ae60; }
+}
+/* ------------------------- */
+
+.success-text-content {
+  opacity: 0;
+  animation: fadeIn 0.5s ease-out 1s forwards; /* Delays text until checkmark finishes */
+}
+
+.success-title {
+  color: #1a1a1a;
+  font-size: 26px;
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+
+.success-subtitle {
+  color: #666;
+  font-size: 15px;
+  line-height: 1.5;
+  margin-bottom: 30px;
+}
+
+.success-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  opacity: 0;
+  animation: fadeIn 0.5s ease-out 1.2s forwards;
+}
+
+.shop-more-btn {
+  background-color: #1a1a1a;
+  color: white;
+  text-decoration: none;
+  padding: 14px 20px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 16px;
+  transition: background-color 0.2s;
+}
+
+.shop-more-btn:hover {
+  background-color: #333;
+}
+
+.view-orders-link {
+  color: #555;
+  text-decoration: underline;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.view-orders-link:hover {
+  color: #1a1a1a;
+}
+
+/* Keyframes for card and text */
+@keyframes slideUpFade {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
